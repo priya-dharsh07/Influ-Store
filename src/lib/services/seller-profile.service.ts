@@ -19,7 +19,14 @@ function serializeMyStore(store: SellerProfile): MyStoreItem {
     updatedAt: store.updatedAt,
   };
 }
+export async function isStoreOwner(slug: string, userId: string): Promise<boolean> {
+  const store = await prisma.sellerProfile.findUnique({
+    where: { slug: slug.toLowerCase() },
+    select: { userId: true },
+  });
 
+  return store?.userId === userId;
+}
 export async function getMyStore(userId: string): Promise<MyStoreItem | null> {
   const store = await prisma.sellerProfile.findUnique({ where: { userId } });
   return store ? serializeMyStore(store) : null;

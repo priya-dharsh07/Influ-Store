@@ -4,8 +4,10 @@ import { ExternalLink, Store as StoreIcon, PackagePlus, Settings, Sparkles, Shop
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ProductGrid } from "@/components/products/ProductGrid";
-import { getStoreBySlug } from "@/lib/services/seller-profile.service";
-import { listProducts } from "@/lib/services/product.service";
+import {
+  getStoreBySlug,
+  isStoreOwner,
+} from "@/lib/services/seller-profile.service";import { listProducts } from "@/lib/services/product.service";
 import { getCurrentUser } from "@/lib/auth/session";
 
 export const dynamic = "force-dynamic";
@@ -32,7 +34,9 @@ export default async function StorePage({ params }: StorePageProps) {
   if (!store) notFound();
 
   const currentUser = await getCurrentUser();
-  const isOwner = currentUser?.id === store.sellerId;
+  const isOwner = currentUser
+  ? await isStoreOwner(slug, currentUser.id)
+  : false;
 
   const productsPage = await listProducts({ sellerSlug: slug });
 
