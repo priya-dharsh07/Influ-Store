@@ -45,14 +45,42 @@ pipeline {
                 }
             }
         }
+        stage('Deploy') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub-credentials',
+                        usernameVariable: 'DOCKER_USERNAME',
+                        passwordVariable: 'DOCKER_PASSWORD'
+                    )
+                ]) {
+                    bat '''
+                    docker login -u "%DOCKER_USERNAME%" -p "%DOCKER_PASSWORD%"
+                    docker pull %DOCKER_USERNAME%/influstore:%BUILD_NUMBER%
+                    docker stop influstore-app || exit 0
+                    docker rm influstore-app || exit 0
+                    docker run -d --name influstore-app -p 3000:3000 %DOCKER_USERNAME%/influstore:%BUILD_NUMBER%
+                    docker logout
+                    docker ps
+                    '''
+                }
+            }
+        }
+        stage('Application Verification') {
+            steps {
+                bat '''
+                docker ps --filter "name=influstore-app"
+                curl.exe -f http://localhost:3000
+                '''
+            }
+        }
     }
     post {
         success {
-            echo 'CI pipeline completed successfully.'
+            echo 'CI/CD pipeline completed successfully.'
         }
-
         failure {
-            echo 'Pipeline failed. Deployment stages will not run.'
+            echo 'Pipeline failed. Deployment or verification did not complete successfully.'
         }
     }
 }
