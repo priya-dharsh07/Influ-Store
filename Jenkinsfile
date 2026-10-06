@@ -29,11 +29,28 @@ pipeline {
                 bat 'docker build -t influstore:%BUILD_NUMBER% .'
             }
         }
+        stage('Docker Push') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub-credentials',
+                        usernameVariable: 'DOCKER_USERNAME',
+                        passwordVariable: 'DOCKER_PASSWORD'
+                    )
+                ]) {
+                    bat 'docker login -u "%DOCKER_USERNAME%" -p "%DOCKER_PASSWORD%"'
+                    bat 'docker tag influstore:%BUILD_NUMBER% %DOCKER_USERNAME%/influstore:%BUILD_NUMBER%'
+                    bat 'docker push %DOCKER_USERNAME%/influstore:%BUILD_NUMBER%'
+                    bat 'docker logout'
+                }
+            }
+        }
     }
     post {
         success {
             echo 'CI pipeline completed successfully.'
         }
+
         failure {
             echo 'Pipeline failed. Deployment stages will not run.'
         }
