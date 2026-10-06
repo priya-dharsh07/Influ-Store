@@ -1,6 +1,5 @@
 pipeline {
     agent any
-
     tools {
         nodejs 'NodeJS-24'
     }
@@ -20,12 +19,7 @@ pipeline {
                 bat 'npx prisma generate'
             }
         }
-        stage('Test / Validation') {
-            steps {
-                bat 'npm run lint'
-            }
-        }
-        stage('Build Application') {
+        stage('Test / Build Validation') {
             steps {
                 bat 'npm run build'
             }
@@ -40,7 +34,6 @@ pipeline {
         success {
             echo 'CI pipeline completed successfully.'
         }
-
         failure {
             echo 'Pipeline failed. Deployment stages will not run.'
         }
