@@ -1,0 +1,29 @@
+Run in docker:
+docker run -d --name influstore-test -p 3000:3000 --env-file .env influstore:1.0
+
+docker images influstore
+
+k8s port forwarding:
+kubectl port-forward deployment/influstore 3000:3000
+
+k8s service:
+Port : http://localhost:31095/
+
+Name:                     influstore-service
+Namespace:                default
+Labels:                   <none>
+Annotations:              <none>
+Selector:                 app=influstore
+Type:                     NodePort
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       10.97.180.203
+IPs:                      10.97.180.203
+Port:                     <unset>  3000/TCP
+TargetPort:               3000/TCP
+NodePort:                 <unset>  31095/TCP
+Endpoints:                10.1.0.6:3000
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Internal Traffic Policy:  Cluster
+Events:                   <none>
