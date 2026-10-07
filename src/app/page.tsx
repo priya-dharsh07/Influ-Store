@@ -79,7 +79,7 @@ export default function Home() {
           {/* Hero text */}
           <div>
             <div className="mb-7 inline-flex rounded-full border border-neutral-300 dark:border-white/10 bg-neutral-200/50 dark:bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-neutral-700 dark:text-neutral-300 backdrop-blur">
-              The future of social commerce
+              Shop what inspires you
             </div>
 
             <h1 className="max-w-4xl text-6xl font-bold leading-[0.95] tracking-tight sm:text-7xl lg:text-8xl">
