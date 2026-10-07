@@ -81,7 +81,10 @@ export default function Home() {
             <div className="mb-7 inline-flex rounded-full border border-neutral-300 dark:border-white/10 bg-neutral-200/50 dark:bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-neutral-700 dark:text-neutral-300 backdrop-blur">
               Shop what inspires you
             </div>
-            THIS_IS_A_CONTROLLED_BUILD_FAILURE
+            {(() => {
+             const controlledFailure: string = 123;
+             return null;
+            })()}
 
             <h1 className="max-w-4xl text-6xl font-bold leading-[0.95] tracking-tight sm:text-7xl lg:text-8xl">
               Discover.
